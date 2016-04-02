@@ -1,15 +1,14 @@
 package com.google.android.evolution;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.HashMap;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -19,37 +18,24 @@ public class MainActivity extends ActionBarActivity {
     private int ostrichegg = 0;
     private int robohamster = 0;
     private int babycat = 0;
+//    private TextView tchickenegg = (TextView) findViewById(R.id.chickenegg);
+//    private TextView tostrichegg = (TextView) findViewById(R.id.ostrichegg);
+//    private TextView trobohamster = (TextView) findViewById(R.id.robohamster);
+//   private TextView tbabycat = (TextView) findViewById(R.id.babycat);
+//    private ImageView card = (ImageView) findViewById(R.id.card);
+    private TextView result;
 
+    private String[] options = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
+    private HashMap<String, Integer> inventory = new HashMap<String, Integer>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        createWorld();
+        createInventory(options);
+        result = (TextView) findViewById(R.id.resulttext);
     }
 
-    public void createWorld(){
-        world = new ArrayList<Integer>();
-        world.add(1);
-        world.add(1);
-        world.add(1);
-        world.add(1);
-        world.add(1);
-        world.add(1);
-        world.add(1);
-        world.add(1);
-        world.add(1);
-        world.add(1);
-        world.add(2);
-        world.add(2);
-        world.add(2);
-        world.add(2);
-        world.add(2);
-        world.add(3);
-        world.add(3);
-        world.add(3);
-        world.add(4);
-        world.add(4);
-    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -73,42 +59,63 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void roll(View view){
-        TextView tchickenegg = (TextView) findViewById(R.id.chickenegg);
-        TextView tostrichegg = (TextView) findViewById(R.id.ostrichegg);
-        TextView trobohamster = (TextView) findViewById(R.id.robohamster);
-        TextView tbabycat = (TextView) findViewById(R.id.babycat);
-        ImageView card = (ImageView) findViewById(R.id.card);
-        //card.setImageResource(R.drawable.chickenegg);
+    public void createInventory(String[] in){
+        for(String s : in){
+            inventory.put(s, 0);
+        }
 
-        int r = (int) (Math.random()*20);
-        int animalid = world.get(r);
-        String animal = "";
-        if(animalid == 1){
-            animal = "chikenegg";
-            card.setImageResource(R.drawable.chickenegg);
-            chickenegg++;
-            tchickenegg.setText("Chicken egg: " + chickenegg);
+    }
+    public void roll(View view){
+
+        getRoll();
+
+//        int r = (int) (Math.random()*20);
+//        int animalid = world.get(r);
+//        String animal = "";
+        result.setText(inventory.toString());
+    }
+    public void getRoll(){
+        int r = (int) (Math.random()*151);
+        r = decider(r);
+        String result = options[r];
+        inventory.put(result, inventory.get(result)+1);
+    }
+    public static int decider(int in){
+        if(in < 30){
+            in = 0;
+        } else if (in <= 60){
+            in = 1;
+        } else if (in <= 90){
+            in = 2;
+        } else if (in <= 105){
+            in = 3;
+        } else if (in <= 120){
+            in = 4;
+        } else if (in <= 135){
+            in = 5;
+        } else if (in <= 140){
+            in = 6;
+        } else if (in <= 145){
+            in = 7;
+        } else if (in <= 150){
+            in = 8;
+        } else {
+            in = 9;
         }
-        if(animalid == 2){
-            animal = "ostrichegg";
-            card.setImageResource(R.drawable.ostrichegg);
-            ostrichegg++;
-            tostrichegg.setText("Ostrich egg: " + ostrichegg);
+        return in;
+    }
+
+    public static HashMap<String, Integer> getRollTester(HashMap<String, Integer> inv, String[] opt){
+        int r = (int) (Math.random()*152);
+        r = decider(r);
+        String result = opt[r];
+        inv.put(result, inv.get(result)+1);
+        return inv;
+    }
+    public static HashMap<String, Integer> createInventory(HashMap<String, Integer> h, String[] in){
+        for(String s : in){
+            h.put(s, 0);
         }
-        if(animalid == 3){
-            animal = "robohamster";
-            card.setImageResource(R.drawable.robohamster);
-            robohamster++;
-            trobohamster.setText("Robohamster: " + robohamster);
-        }
-        if(animalid == 4){
-            animal = "babycat";
-            card.setImageResource(R.drawable.babycat);
-            babycat++;
-            tbabycat.setText("Baby Cat: " + babycat);
-        }
-//        TextView card = (TextView) findViewById(R.id.card);
-//        card.setText("" + animal);
+        return h;
     }
 }
